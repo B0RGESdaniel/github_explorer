@@ -40,9 +40,9 @@ export function Repository() {
     const { params } = useRouteMatch<RepositoryParams>();
 
     useEffect(() => {
-        api.get(`repos/${params.repository}`).then((response) => setRepository(response.data)) 
+        api.get<RepositoryProps | null>(`repos/${params.repository}`).then((response) => setRepository(response.data)) 
 
-        api.get(`repos/${params.repository}/issues`).then((response) => setIssues(response.data)) 
+        api.get<Issue[]>(`repos/${params.repository}/issues`).then((response) => setIssues(response.data)) 
 
     }, [params.repository])
 
@@ -81,7 +81,7 @@ export function Repository() {
             </RepositoryInfo>
         ) }
         <Issues>
-            { issues.map((issue) => {
+            { issues.map((issue) => (
                 <a key={issue.id} href={issue.html_url}>
                     <div>
                         <strong>{issue.title}</strong>
@@ -89,7 +89,7 @@ export function Repository() {
                     </div>
                     <FiChevronRight size={20}/>
                 </a>
-            }) }
+            )) }
         </Issues>
         </>
     )   
